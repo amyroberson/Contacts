@@ -12,7 +12,7 @@ import UIKit
 class ContactsTableViewController: UITableViewController {
     var dataSource: ContactStore?
     
-    var list: [Contact] = [Contact(givenName: "Bob", familyName: "Smith", address: "522 Peachford circle Atlanta,GA 30323", email: "amy@roberson.xyz", phone: "555-555-5555", birthday: Date(), note: "testing")]
+    var list: [Contact] = []
     
     subscript(_ index: Int) -> Contact {
         return list[index]
@@ -29,6 +29,10 @@ class ContactsTableViewController: UITableViewController {
         }
         addVC.delegate = self
         self.show(addVC, sender: nil)
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        list = (dataSource?.contacts) ?? []
+        tableView.reloadData()
     }
     
     override func viewDidLoad() {
