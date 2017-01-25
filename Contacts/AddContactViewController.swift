@@ -12,6 +12,7 @@ import UIKit
 class AddContactViewController: UIViewController{
     
     var delegate: ContactsTableViewController?
+    var dataSource: ContactStore?
    
     
     @IBOutlet weak var firstNameTextField: UITextField!
@@ -30,14 +31,16 @@ class AddContactViewController: UIViewController{
             let email = emailTextField.text,
             let note = noteTextField.text {
             let thisContact = Contact(givenName: first, familyName: last, address: address, email: email, phone: phone, birthday: datePicker.date, note: note)
-            delegate?.dataSource.list.append(thisContact)
+            dataSource?.contacts.append(thisContact)
         }
        
-        //do {
-        //    try delegate?.dataSource.dataSource.saveContacts()
-        //} catch {
-        //   print("failed to Write")
-        //}
+        do {
+            try dataSource?.saveContacts()
+            dataSource?.fetchContacts()
+
+        } catch {
+            print("failed to save")
+        }
         delegate?.tableView.reloadData()
         let _ = self.navigationController?.popViewController(animated: true)
     }

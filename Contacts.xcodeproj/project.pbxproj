@@ -96,6 +96,7 @@
 			isa = PBXGroup;
 			children = (
 				E1A29D601E37D5B900164A48 /* Contact.swift */,
+				E129271C1E3805BF008D443B /* Util.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -127,7 +128,6 @@
 				E12927171E37E9A2008D443B /* Model */,
 				E12927131E37E924008D443B /* MasterViewController.swift */,
 				E12927151E37E98A008D443B /* ContactsViewController.swift */,
-				E129271C1E3805BF008D443B /* Util.swift */,
 				E12927111E37E524008D443B /* ContactsTableViewController.swift */,
 				E129271A1E3800C0008D443B /* EditContactViewController.swift */,
 				E12927181E37FF21008D443B /* AddContactViewController.swift */,

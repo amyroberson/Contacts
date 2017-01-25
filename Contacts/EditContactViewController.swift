@@ -11,7 +11,7 @@ import UIKit
 
 class EditContactViewController:  UIViewController, UITextFieldDelegate {
     
-    //var dataSource
+    var dataSource: ContactStore?
     //var contactIndex: Int
     var contact: Contact?
    
@@ -40,10 +40,15 @@ class EditContactViewController:  UIViewController, UITextFieldDelegate {
             thisContact.email = email
             thisContact.note = note
             thisContact.birthday = datePicker.date
-            //dataSource?[contactIndex?] = thisContact
+            contact = thisContact
         }
         
-        //save here
+        do {
+            try dataSource?.saveContacts()
+            dataSource?.fetchContacts()
+        } catch {
+            print("failed to save")
+        }
         let _ = self.navigationController?.popViewController(animated: true)
     }
     

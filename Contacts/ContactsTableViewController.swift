@@ -10,8 +10,13 @@ import Foundation
 import UIKit
 
 class ContactsTableViewController: UITableViewController {
-    let dataSource = ContactsTableDataSource()
+    var dataSource: ContactStore?
     
+    var list: [Contact] = [Contact(givenName: "Bob", familyName: "Smith", address: "522 Peachford circle Atlanta,GA 30323", email: "amy@roberson.xyz", phone: "555-555-5555", birthday: Date(), note: "testing")]
+    
+    subscript(_ index: Int) -> Contact {
+        return list[index]
+    }
     
     var selectionClosure: (Contact) -> Void = { contact in
         print("selected \(contact)")
@@ -19,6 +24,9 @@ class ContactsTableViewController: UITableViewController {
     @IBAction func addContactButtonPressed(_ sender: UIBarButtonItem) {
         let storyBoard = UIStoryboard(name:"ContactsTable", bundle: nil)
         let addVC: AddContactViewController = storyBoard.instantiateViewController(withIdentifier: "Add") as! AddContactViewController
+        if let data = self.dataSource {
+            addVC.dataSource = data
+        }
         addVC.delegate = self
         self.show(addVC, sender: nil)
     }
@@ -26,34 +34,26 @@ class ContactsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "ContactCell")
-        tableView.dataSource = dataSource
+        tableView.dataSource = self
         tableView.reloadData()
+        list = (dataSource?.contacts) ?? []
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let contact = dataSource[indexPath.row]
+        let contact = list[indexPath.row]
         
         selectionClosure(contact)
     }
-}
 
-final class ContactsTableDataSource: NSObject, UITableViewDataSource {
-    //var dataSource = ContactStore()
-    var list: [Contact] = []
-    
-    subscript(_ index: Int) -> Contact {
-        return list[index]
-    }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
        return 1
     }
     
-    func  tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func  tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return list.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "ContactCell") else {
             fatalError("failed to dequeue cell")
         }

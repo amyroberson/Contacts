@@ -10,7 +10,8 @@ import UIKit
 
 class ContactsViewController: UIViewController {
 
-
+    var dataSource: ContactStore?
+    var index: Int?
     var contact: Contact? {
         didSet{
             updateUI()
@@ -29,7 +30,12 @@ class ContactsViewController: UIViewController {
         let storyBoard = UIStoryboard(name:"Main", bundle: nil)
         let editVC: EditContactViewController = storyBoard.instantiateViewController(withIdentifier: "Edit") as! EditContactViewController
         editVC.contact = self.contact
+        if let data = self.dataSource {
+            editVC.dataSource = data
+        }
         self.show(editVC, sender: nil)
+        
+        
     }
 
     func updateUI(){
